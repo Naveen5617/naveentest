@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api context="/check" name="check" xmlns="http://ws.apache.org/ns/synapse">
+    <resource methods="GET">
+        <inSequence>
+            <propertyGroup>
+                <property expression="get-property('query.param.buildingno')" name="buildingno" scope="default" type="STRING"/>
+                <property expression="get-property('query.param.additionalno')" name="additionalno" scope="default" type="STRING"/>
+                <property expression="get-property('query.param.zipcode')" name="zipcode" scope="default" type="STRING"/>
+            </propertyGroup>
+            <script language="js"><![CDATA[var buildingno= mc.getProperty("buildingno")
+if(isNaN(buildingno))
+{
+var response={
+    "totalSearchResults": "0",
+    "Addresses": [],
+    "PostCode": null,
+    "success": true,
+    "result": null,
+    "statusdescription": "NO-RESULTS",
+    "fullexception": null
+}
+ mc.setPayloadJSON(response);
+}
+else
+{
+var isbuildingnovalid=true
+mc.setProperty("isbuildingnovalid",isbuildingnovalid);
+}
+var additionalno= mc.getProperty("additionalno")
+
+if(isNaN(additionalno))
+{
+var response={
+    "totalSearchResults": "0",
+    "Addresses": [],
+    "PostCode": null,
+    "success": true,
+    "result": null,
+    "statusdescription": "NO-RESULTS",
+    "fullexception": null
+}
+ mc.setPayloadJSON(response);
+}
+else
+{
+var isadditionalnovalid=true;
+mc.setProperty("isadditionalnovalid",isadditionalnovalid);
+}
+
+
+ var zipcode= mc.getProperty("zipcode")
+if(isNaN(zipcode))
+{
+var response=
+{
+    "totalSearchResults": "0",
+    "Addresses": [],
+    "PostCode": null,
+    "success": true,
+    "result": null,
+    "statusdescription": "NO-RESULTS",
+    "fullexception": null
+}
+ mc.setPayloadJSON(response);
+}
+else
+{
+var isazipcodevalid=true
+mc.setProperty("isazipcodevalid",isazipcodevalid);
+}]]></script>
+            <filter regex="true" source="boolean(get-property('isbuildingnovalid') and get-property('isadditionalnovalid') and get-property('isadditionalnovalid'))">
+                <then>
+                    <log level="full" separator="********success*******"/>
+                </then>
+                <else>
+                    <log level="full" separator="  ******eneteredstringvalues*********"/>
+                </else>
+            </filter>
+            <respond/>
+        </inSequence>
+        <outSequence/>
+        <faultSequence/>
+    </resource>
+</api>
