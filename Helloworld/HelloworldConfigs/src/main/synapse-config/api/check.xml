@@ -12,6 +12,7 @@
 if(isNaN(buildingno))
 {
 var response={
+                
     "totalSearchResults": "0",
     "Addresses": [],
     "PostCode": null,
